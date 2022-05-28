@@ -20,14 +20,16 @@ namespace SportApp.Controllers
         }
 
         // GET: Users
+       // [HttpGet]
         public async Task<IActionResult> Index()
         {
-              return _context.users != null ? //jeśli nie jet puste to zwróć widok do którego wysyłasz listę 
-                          View(await _context.users.ToListAsync()) :
-                          Problem("Entity set 'SportAppDbContext.users'  is null.");
+            return _context.users != null ? //jeśli nie jet puste to zwróć widok do którego wysyłasz listę 
+                        View(await _context.users.ToListAsync()) :
+                        Problem("Entity set 'SportAppDbContext.users'  is null.");
         }
 
         // GET: Users/Details/5
+        //[HttpGet("{id}")]//Popsuło 
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.users == null)
@@ -87,7 +89,7 @@ namespace SportApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,LastName,Email,Created")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,LastName,Email,Created")] User user)//bindujemy te wartości na wartości modelu
         {
             if (id != user.Id)
             {
