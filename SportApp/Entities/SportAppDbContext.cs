@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportApp.Models;
 
-namespace SportApp.Entities
+namespace SportApp.Entities//To undo this action, use Remove-Migration.
 {
     public class SportAppDbContext : DbContext
     {
@@ -28,10 +28,23 @@ namespace SportApp.Entities
                 .IsRequired()
                 .HasMaxLength(25);
 
+            modelBuilder.Entity<User>(entity => {
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
+
             modelBuilder.Entity<User>()
                 .Property(r => r.Email)
-                .IsRequired()
+                .IsRequired()                
                 .HasMaxLength(36);
+            modelBuilder.Entity<Address>()
+                .Property(r => r.City)
+                .IsRequired();
+            modelBuilder.Entity<Address>()
+                .Property(r => r.Street)
+                .IsRequired();
+            modelBuilder.Entity<Address>()
+                .Property(r => r.PostalCode)
+                .IsRequired();
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
