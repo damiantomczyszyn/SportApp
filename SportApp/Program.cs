@@ -14,7 +14,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<SportAppSeeder>();
-//seeder.Seed(); // narazie nie seedujemy wartoœciami bo s¹ puste
+seeder.Seed(); // narazie nie seedujemy wartoœciami bo s¹ puste
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

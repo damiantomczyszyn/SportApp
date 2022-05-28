@@ -28,8 +28,14 @@ namespace SportApp
         {
             var users = new List<User>()
             {
-                new User(){ },
-                new User(){ }
+                new User(){ Name="Zygfryd", Age=21,LastName="Mabenz",
+                Email="Mabenz@o2.pl"},
+                new User(){ Name="Zygfrydo", Age=39,LastName="Don Mabenz",
+                Email="Mabenzo@o2.pl"},
+                new User(){ Name="Kasijaso", Age=100,LastName="Gkeeper",
+                Email="GKasi@o2.pl"},
+                new User(){ Name="Kristiano", Age=18,LastName="Rolando",
+                Email="KaRol@o2.pl"}
             };
             return users;
 
