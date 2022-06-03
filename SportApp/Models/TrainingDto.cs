@@ -1,6 +1,6 @@
 ﻿namespace SportApp.Models
 {
-    public class Trainingdto
+    public class TrainingDto
     {
         public int Id { get; set; }
         public string? Description { get; set; }// Opis do wyświetlenia przy widoku treningu

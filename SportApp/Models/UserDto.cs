@@ -13,7 +13,7 @@
 
         public string PostalCode { get; set; }
 
-        public  Training Training { get; set; }
-        public  ListOfParameters Parameters { get; set; }
+      //  public  Training Training { get; set; }
+      //  public  ListOfParameters Parameters { get; set; }
     }
 }

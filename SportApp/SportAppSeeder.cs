@@ -29,7 +29,25 @@ namespace SportApp
             var users = new List<User>()
             {
                 new User(){ Name="Zygfryd", Age=21,LastName="Mabenz",
-                Email="Mabenz@o2.pl"},
+                Email="Mabenz@o2.pl",
+                Training = new Training()
+                {
+                  Description= "Ćwiczenie nr 1",
+                  PauseBetweenReps = 3,
+                  BreakTimeBetweenEx = 4,
+                },
+                Address = new Address()
+                { City = "Lublin",
+                  Street = "Spacerowa",
+                  PostalCode="21-555",
+                  County="Polska"},
+                Parameters = new ListOfParameters()
+                {
+                    Weight = 80,
+                    Tall = 180,
+                    MaxHeartRate = 200,
+                }
+                },
                 new User(){ Name="Zygfrydo", Age=39,LastName="Don Mabenz",
                 Email="Mabenzo@o2.pl"},
                 new User(){ Name="Kasijaso", Age=100,LastName="Gkeeper",

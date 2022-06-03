@@ -7,5 +7,7 @@
         public int NumberOfExercises { get; set; }
 
         public int NumberOfRepeat { get; set; }
+        public int TrainingId { get; set; }
+        public virtual Training Training { get; set; }
     }
 }

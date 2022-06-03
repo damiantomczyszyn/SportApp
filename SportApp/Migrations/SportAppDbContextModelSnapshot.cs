@@ -68,7 +68,7 @@ namespace SportApp.Migrations
                     b.Property<int>("NumberOfRepeat")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -117,13 +117,7 @@ namespace SportApp.Migrations
                     b.Property<int>("PauseBetweenReps")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("trainings");
                 });
@@ -135,6 +129,9 @@ namespace SportApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -152,57 +149,79 @@ namespace SportApp.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<int?>("ListOfParametersId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int?>("ParametersId")
+                    b.Property<int?>("TrainingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId")
+                        .IsUnique()
+                        .HasFilter("[AddressId] IS NOT NULL");
+
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("ParametersId");
+                    b.HasIndex("ListOfParametersId");
+
+                    b.HasIndex("TrainingId")
+                        .IsUnique()
+                        .HasFilter("[TrainingId] IS NOT NULL");
 
                     b.ToTable("users");
                 });
 
             modelBuilder.Entity("SportApp.Models.Exercise", b =>
                 {
-                    b.HasOne("SportApp.Models.Training", null)
+                    b.HasOne("SportApp.Models.Training", "Training")
                         .WithMany("Exercise")
-                        .HasForeignKey("TrainingId");
-                });
-
-            modelBuilder.Entity("SportApp.Models.Training", b =>
-                {
-                    b.HasOne("SportApp.Models.User", null)
-                        .WithOne("Training")
-                        .HasForeignKey("SportApp.Models.Training", "UserId")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("SportApp.Models.User", b =>
                 {
+                    b.HasOne("SportApp.Models.Address", "Address")
+                        .WithOne("User")
+                        .HasForeignKey("SportApp.Models.User", "AddressId");
+
                     b.HasOne("SportApp.Models.ListOfParameters", "Parameters")
                         .WithMany()
-                        .HasForeignKey("ParametersId");
+                        .HasForeignKey("ListOfParametersId");
+
+                    b.HasOne("SportApp.Models.Training", "Training")
+                        .WithOne("User")
+                        .HasForeignKey("SportApp.Models.User", "TrainingId");
+
+                    b.Navigation("Address");
 
                     b.Navigation("Parameters");
+
+                    b.Navigation("Training");
+                });
+
+            modelBuilder.Entity("SportApp.Models.Address", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SportApp.Models.Training", b =>
                 {
                     b.Navigation("Exercise");
-                });
 
-            modelBuilder.Entity("SportApp.Models.User", b =>
-                {
-                    b.Navigation("Training");
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@ using SportApp.Models;
 namespace SportApp.Controllers
 {
     [Route("api/{userId}/training")]
-    [ApiController]
+    [ApiController]//wszystkie modele zostały automatycznie zwalidowane dla każdej akcji
     public class TrainingController : Controller
     {
 
@@ -16,7 +16,7 @@ namespace SportApp.Controllers
             _context = context;
         }
         [HttpPost]
-        public IActionResult Post([FromRoute]int userId,Training training)
+        public IActionResult Post([FromRoute]int userId,Training training)//przyjmuje int z parametru z route, i obiekt DTO
         {
 
             return View();

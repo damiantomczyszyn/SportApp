@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,42 +14,57 @@ namespace SportApp.Controllers
     public class UsersController : Controller
     {
         private readonly SportAppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UsersController(SportAppDbContext context)
+        public UsersController(SportAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Users
        // [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var users = _context
+                .users
+                .Include(r=> r.Address)
+                .Include(r=>r.Training)
+                .ToList();
+            var userdtos = _mapper.Map<List<UserDto>>(users);
+
             return _context.users != null ? //jeśli nie jet puste to zwróć widok do którego wysyłasz listę 
-                        View(await _context.users.ToListAsync()) :
+                        View(userdtos) :
                         Problem("Entity set 'SportAppDbContext.users'  is null.");
         }
 
         // GET: Users/Details/5
         //[HttpGet("{id}")]//Popsuło 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details([FromRoute]int? id)
         {
+            
             if (id == null || _context.users == null)
             {
                 return NotFound();
             }
-
-            var user = await _context.users.FirstOrDefaultAsync(m => m.Id == id);
+            
+            var user = await _context
+                .users
+                .Include(r => r.Address)
+                .Include(r => r.Training)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
-
-            return View(user);
+            var userDto= _mapper.Map<UserDto>(user);
+            return View(userDto);
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+        public IActionResult Create()//powinien dawać new userDTO i wszystko w nim zebrać a potem zmapować na inne modele
         {
+
             return View(new User());
         }
 

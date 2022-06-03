@@ -5,7 +5,7 @@ namespace SportApp.Entities//To undo this action, use Remove-Migration.
 {
     public class SportAppDbContext : DbContext
     {
-        private string _connectionString = "server=REBOOTX;Database=SportApps;Trusted_Connection=True;";
+        private string _connectionString = "server=REBOOTX;Database=SportAppsTest1;Trusted_Connection=True;";
         public DbSet<User> users { get; set; }
         public DbSet<Training> trainings { get; set; }
 
@@ -27,6 +27,10 @@ namespace SportApp.Entities//To undo this action, use Remove-Migration.
                 .Property(r => r.LastName)
                 .IsRequired()
                 .HasMaxLength(25);
+          /*  modelBuilder.Entity<User>()
+            .HasOne(p => p.Training)
+            .WithOne(p => p.User)
+            .HasForeignKey(p => p.TrainingId);*/
 
             modelBuilder.Entity<User>(entity => {
                 entity.HasIndex(e => e.Email).IsUnique();
@@ -36,7 +40,7 @@ namespace SportApp.Entities//To undo this action, use Remove-Migration.
                 .Property(r => r.Email)
                 .IsRequired()                
                 .HasMaxLength(36);
-            modelBuilder.Entity<Address>()
+        /*    modelBuilder.Entity<Address>()
                 .Property(r => r.City)
                 .IsRequired();
             modelBuilder.Entity<Address>()
@@ -44,7 +48,7 @@ namespace SportApp.Entities//To undo this action, use Remove-Migration.
                 .IsRequired();
             modelBuilder.Entity<Address>()
                 .Property(r => r.PostalCode)
-                .IsRequired();
+                .IsRequired();*/
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
