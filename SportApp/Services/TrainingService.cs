@@ -1,24 +1,38 @@
-﻿using SportApp.Entities;
+﻿using AutoMapper;
+using SportApp.Entities;
 using SportApp.Models;
 //using SportApp.Exceptions;
 
 namespace SportApp.Services
 {
-    public class TrainingService
+    public interface ITrainingService
+{
+    int Create(int userId, TrainingDto dto);
+}
+
+
+    public class TrainingService : ITrainingService
     {
         private readonly SportAppDbContext _context;
-        public TrainingService(SportAppDbContext context)
+        private readonly IMapper _mapper;
+        public TrainingService(SportAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-   /*     public int Create(int userId, TrainingDto dto)
+        public int Create(int userId, TrainingDto dto)
         { 
             var user = _context.users.FirstOrDefault(u=>u.Id == userId);
-            if (user == null)
-                throw new Exception("brak");
+            if (user is null)
+                throw new Exception("User not Found");
 
             var trainingEntity = _mapper.Map<Training>(dto);
-            return Create(user, trainingEntity);
-        }*/
+
+            trainingEntity.userId = userId;
+
+            _context.trainings.Add(trainingEntity);
+            _context.SaveChanges();
+            return trainingEntity.Id;
+        }
     }
 }

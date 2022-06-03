@@ -10,6 +10,8 @@
 
         public int PauseBetweenReps { get; set; }//w sekundach int
         public int BreakTimeBetweenEx { get; set; }// w sekundach int
+
+        public int? userId;
         
         public virtual User User { get; set; }
         public virtual List<Exercise>? Exercise { get; set; } // lista ćwiczeń
