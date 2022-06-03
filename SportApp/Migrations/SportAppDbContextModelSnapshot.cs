@@ -117,7 +117,13 @@ namespace SportApp.Migrations
                     b.Property<int>("PauseBetweenReps")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("trainings");
                 });
@@ -154,14 +160,12 @@ namespace SportApp.Migrations
                     b.Property<int?>("ParametersId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ParametersId");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                    b.HasIndex("TrainingId");
+                    b.HasIndex("ParametersId");
 
                     b.ToTable("users");
                 });
@@ -173,24 +177,32 @@ namespace SportApp.Migrations
                         .HasForeignKey("TrainingId");
                 });
 
+            modelBuilder.Entity("SportApp.Models.Training", b =>
+                {
+                    b.HasOne("SportApp.Models.User", null)
+                        .WithOne("Training")
+                        .HasForeignKey("SportApp.Models.Training", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SportApp.Models.User", b =>
                 {
                     b.HasOne("SportApp.Models.ListOfParameters", "Parameters")
                         .WithMany()
                         .HasForeignKey("ParametersId");
 
-                    b.HasOne("SportApp.Models.Training", "Training")
-                        .WithMany()
-                        .HasForeignKey("TrainingId");
-
                     b.Navigation("Parameters");
-
-                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("SportApp.Models.Training", b =>
                 {
                     b.Navigation("Exercise");
+                });
+
+            modelBuilder.Entity("SportApp.Models.User", b =>
+                {
+                    b.Navigation("Training");
                 });
 #pragma warning restore 612, 618
         }
