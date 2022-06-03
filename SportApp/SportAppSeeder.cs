@@ -40,7 +40,7 @@ namespace SportApp
                 { City = "Lublin",
                   Street = "Spacerowa",
                   PostalCode="21-555",
-                  County="Polska"},
+                  Country="Polska"},
                 Parameters = new ListOfParameters()
                 {
                     Weight = 80,

@@ -12,7 +12,7 @@ using SportApp.Entities;
 namespace SportApp.Migrations
 {
     [DbContext(typeof(SportAppDbContext))]
-    [Migration("20220603090047_init")]
+    [Migration("20220603093641_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace SportApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("County")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

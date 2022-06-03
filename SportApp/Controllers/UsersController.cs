@@ -65,7 +65,7 @@ namespace SportApp.Controllers
         public IActionResult Create()//powinien dawać new userDTO i wszystko w nim zebrać a potem zmapować na inne modele
         {
 
-            return View(new User());
+            return View(new CreateUserDto());
         }
 
         // POST: Users/Create
@@ -73,15 +73,16 @@ namespace SportApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Age,LastName,Email")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Name,Age,LastName,Email,City,PostalCode,Street,Country")] CreateUserDto dto)
         {
-            if (ModelState.IsValid)
-            {
+            var user = _mapper.Map<User>(dto);
+           // if (ModelState.IsValid)
+           // {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(user);
+          //  }
+          //  return View(user);
         }
 
         // GET: Users/Edit/5

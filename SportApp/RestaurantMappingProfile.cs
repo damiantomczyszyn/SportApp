@@ -10,9 +10,11 @@ namespace SportApp
             CreateMap<User, UserDto>()
                 .ForMember(m => m.City, c => c.MapFrom(s => s.Address.City))
                 .ForMember(m => m.PostalCode, c => c.MapFrom(s => s.Address.PostalCode))
-                .ForMember(m => m.County, c => c.MapFrom(s => s.Address.County))
+                .ForMember(m => m.Country, c => c.MapFrom(s => s.Address.Country))
                 .ForMember(m => m.Street, c => c.MapFrom(s => s.Address.Street));
             CreateMap<Training, TrainingDto>();
+            CreateMap<CreateUserDto, User>()
+                .ForMember(u => u.Address, c => c.MapFrom(dto => new Address() { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street, Country=dto.Country }));
                 
         }
     }
