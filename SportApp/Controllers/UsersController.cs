@@ -76,13 +76,13 @@ namespace SportApp.Controllers
         public async Task<IActionResult> Create([Bind("Id,Name,Age,LastName,Email,City,PostalCode,Street,Country")] CreateUserDto dto)
         {
             var user = _mapper.Map<User>(dto);
-           // if (ModelState.IsValid)
-           // {
+            if (ModelState.IsValid)
+            {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-          //  }
-          //  return View(user);
+            }
+            return BadRequest();
         }
 
         // GET: Users/Edit/5
@@ -98,7 +98,8 @@ namespace SportApp.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+            var userDto = _mapper.Map<UpdateUserDto>(user);
+            return View(userDto);
         }
 
         // POST: Users/Edit/5
@@ -106,9 +107,10 @@ namespace SportApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,LastName,Email,Created")] User user)//bindujemy te wartości na wartości modelu
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Age,LastName,Email,City,PostalCode,Street,Country")] UpdateUserDto dto)//bindujemy te wartości na wartości modelu
         {
-            if (id != user.Id)
+            var user = _context.users.FirstOrDefault(user => user.Id == id);
+            if (user is null)
             {
                 return NotFound();
             }
@@ -117,7 +119,20 @@ namespace SportApp.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    
+                    if (user.Address is null)
+                        user.Address = new Address() { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street, Country = dto.Country };
+                    else 
+                    {
+                        user.Address.City = dto.City;
+                        user.Address.PostalCode = dto.PostalCode;
+                        user.Address.Street = dto.Street;
+                        user.Address.Country = dto.Country;
+                    }
+                    user.Age = dto.Age;
+                    user.LastName= dto.LastName;
+                    user.Email = dto.Email;
+                    user.Name = dto.Name;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
