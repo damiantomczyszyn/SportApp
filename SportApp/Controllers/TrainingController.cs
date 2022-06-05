@@ -21,21 +21,18 @@ namespace SportApp.Controllers
         {
             _context = context;
             _mapper = mapper;
+            _trainingService = trainingService;
         }
+
+
         [HttpPost]
-        /* public IActionResult Post([FromRoute]int userId,TrainingDto dto)//przyjmuje int z parametru z route, i obiekt DTO
-         {
+        public ActionResult Post([FromRoute] int userId, [FromBody] TrainingDto dto)
+        {
+            var newTrainingId = _trainingService.Create(userId, dto);
+            return Created($"{userId}/training/{newTrainingId}", null);
+        }
 
-             return View();
-         }
-
-                 [HttpPost]
-         public ActionResult Post([FromRoute] int userId, [FromBody]TrainingDto dto)
-         {
-             var newTrainingId = _trainingService.Create(userId, dto);
-             return Created($"{userId}/training/{newTrainingId}", null);
-
-         */
+       
         [HttpGet("list")]
         public async Task<IActionResult> Index()
         {
@@ -45,7 +42,7 @@ namespace SportApp.Controllers
         }
 
 
-
+/*
         // GET: training/Create
         [HttpGet("create")]
         public IActionResult Create([FromRoute]int userId)//powinien dawać new userDTO i wszystko w nim zebrać a potem zmapować na inne modele
@@ -56,9 +53,9 @@ namespace SportApp.Controllers
 
         // POST: training/Create
 
-        [HttpPost("create")]
+        [HttpPost("create")] 
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromRoute] int userId, [Bind("Name,NumberOfExercises,NumberOfRepeat")] TrainingDto dto)
+        public async Task<IActionResult> Create([FromRoute] int userId, [Bind("Id,Description,PauseBetweenReps,BreakTimeBetweenEx")] TrainingDto dto)
         {
             var train = _mapper.Map<Training>(dto);
             var user = _context.users.FirstOrDefault(u => u.Id == userId);
@@ -69,12 +66,12 @@ namespace SportApp.Controllers
             {
                 _context.Add(train);
                 await _context.SaveChangesAsync();
-                return Redirect("https://localhost:7098/user/2/training/list");
+                return Redirect("https://localhost:7098/user/0/training/list");
             }
             return BadRequest();
         }
 
-
+ */
 
 
 

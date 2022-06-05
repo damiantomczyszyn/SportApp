@@ -12,7 +12,7 @@ using SportApp.Entities;
 namespace SportApp.Migrations
 {
     [DbContext(typeof(SportAppDbContext))]
-    [Migration("20220603093641_init")]
+    [Migration("20220605124658_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

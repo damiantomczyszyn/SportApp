@@ -34,5 +34,21 @@ namespace SportApp.Services
             _context.SaveChanges();
             return trainingEntity.Id;
         }
+
+        public int GetAll(int userId, TrainingDto dto)
+        {
+            var user = _context.users.FirstOrDefault(u => u.Id == userId);
+            if (user is null)
+                throw new Exception("User not Found");
+
+            var trainingEntity = _mapper.Map<Training>(dto);
+
+            trainingEntity.userId = userId;
+
+            _context.trainings.Add(trainingEntity);
+            _context.SaveChanges();
+            return trainingEntity.Id;
+        }
+
     }
 }
