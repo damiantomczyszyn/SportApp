@@ -41,43 +41,6 @@ namespace SportApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "trainings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PauseBetweenReps = table.Column<int>(type: "int", nullable: false),
-                    BreakTimeBetweenEx = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_trainings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "exercises",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfExercises = table.Column<int>(type: "int", nullable: false),
-                    NumberOfRepeat = table.Column<int>(type: "int", nullable: false),
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_exercises", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_exercises_trainings_TrainingId",
-                        column: x => x.TrainingId,
-                        principalTable: "trainings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -105,17 +68,62 @@ namespace SportApp.Migrations
                         column: x => x.ListOfParametersId,
                         principalTable: "parameters",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "trainings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PauseBetweenReps = table.Column<int>(type: "int", nullable: false),
+                    BreakTimeBetweenEx = table.Column<int>(type: "int", nullable: false),
+                    userId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_trainings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_users_trainings_TrainingId",
+                        name: "FK_trainings_users_userId",
+                        column: x => x.userId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "exercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumberOfExercises = table.Column<int>(type: "int", nullable: false),
+                    NumberOfRepeat = table.Column<int>(type: "int", nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_exercises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_exercises_trainings_TrainingId",
                         column: x => x.TrainingId,
                         principalTable: "trainings",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_exercises_TrainingId",
                 table: "exercises",
                 column: "TrainingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_trainings_userId",
+                table: "trainings",
+                column: "userId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_users_AddressId",
@@ -134,19 +142,15 @@ namespace SportApp.Migrations
                 name: "IX_users_ListOfParametersId",
                 table: "users",
                 column: "ListOfParametersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_users_TrainingId",
-                table: "users",
-                column: "TrainingId",
-                unique: true,
-                filter: "[TrainingId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "exercises");
+
+            migrationBuilder.DropTable(
+                name: "trainings");
 
             migrationBuilder.DropTable(
                 name: "users");
@@ -156,9 +160,6 @@ namespace SportApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "parameters");
-
-            migrationBuilder.DropTable(
-                name: "trainings");
         }
     }
 }

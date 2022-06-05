@@ -12,6 +12,7 @@ builder.Services.AddScoped<SportAppSeeder>();
 builder.Services.AddDbContext<SportAppDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ITrainingService,TrainingService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 //builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

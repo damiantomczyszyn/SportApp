@@ -1,4 +1,6 @@
-﻿namespace SportApp.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SportApp.Models
 {
     public class Training
     {
@@ -10,8 +12,8 @@
 
         public int PauseBetweenReps { get; set; }//w sekundach int
         public int BreakTimeBetweenEx { get; set; }// w sekundach int
-
-        public int userId;
+        [ForeignKey("User")]
+        public int userId { get; set; }
         
         public virtual User User { get; set; }
         public virtual List<Exercise>? Exercise { get; set; } // lista ćwiczeń

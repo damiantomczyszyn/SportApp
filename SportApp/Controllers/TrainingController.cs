@@ -40,6 +40,13 @@ namespace SportApp.Controllers
                         View(await _context.trainings.ToListAsync()) :
                         Problem("Entity set 'SportAppDbContext.users'  is null.");
         }
+        [HttpGet]
+        public ActionResult<TrainingDto> Get([FromRoute] int userId)
+        {
+           // var user = _context.users.FirstOrDefault(u => u.Id == userId);
+            var training = _context.trainings.FirstOrDefault(t => t.userId == userId);
+            return Ok(training);
+        }
 
 
 /*
