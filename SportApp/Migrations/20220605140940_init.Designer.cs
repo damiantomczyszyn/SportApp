@@ -12,7 +12,7 @@ using SportApp.Entities;
 namespace SportApp.Migrations
 {
     [DbContext(typeof(SportAppDbContext))]
-    [Migration("20220603093641_init")]
+    [Migration("20220605140940_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,7 +119,13 @@ namespace SportApp.Migrations
                     b.Property<int>("PauseBetweenReps")
                         .HasColumnType("int");
 
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
 
                     b.ToTable("trainings");
                 });
@@ -173,10 +179,6 @@ namespace SportApp.Migrations
 
                     b.HasIndex("ListOfParametersId");
 
-                    b.HasIndex("TrainingId")
-                        .IsUnique()
-                        .HasFilter("[TrainingId] IS NOT NULL");
-
                     b.ToTable("users");
                 });
 
@@ -191,6 +193,17 @@ namespace SportApp.Migrations
                     b.Navigation("Training");
                 });
 
+            modelBuilder.Entity("SportApp.Models.Training", b =>
+                {
+                    b.HasOne("SportApp.Models.User", "User")
+                        .WithOne("Training")
+                        .HasForeignKey("SportApp.Models.Training", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SportApp.Models.User", b =>
                 {
                     b.HasOne("SportApp.Models.Address", "Address")
@@ -201,15 +214,9 @@ namespace SportApp.Migrations
                         .WithMany()
                         .HasForeignKey("ListOfParametersId");
 
-                    b.HasOne("SportApp.Models.Training", "Training")
-                        .WithOne("User")
-                        .HasForeignKey("SportApp.Models.User", "TrainingId");
-
                     b.Navigation("Address");
 
                     b.Navigation("Parameters");
-
-                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("SportApp.Models.Address", b =>
@@ -221,9 +228,11 @@ namespace SportApp.Migrations
             modelBuilder.Entity("SportApp.Models.Training", b =>
                 {
                     b.Navigation("Exercise");
+                });
 
-                    b.Navigation("User")
-                        .IsRequired();
+            modelBuilder.Entity("SportApp.Models.User", b =>
+                {
+                    b.Navigation("Training");
                 });
 #pragma warning restore 612, 618
         }

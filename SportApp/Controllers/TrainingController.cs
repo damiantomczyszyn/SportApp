@@ -1,31 +1,96 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportApp.Entities;
 using SportApp.Models;
+using SportApp.Services;
+
 namespace SportApp.Controllers
 {
-    [Route("api/{userId}/training")]
+    [Route("/user/{userId}/training")]
+    //[Route("/training/")]
     [ApiController]//wszystkie modele zostały automatycznie zwalidowane dla każdej akcji
     public class TrainingController : Controller
     {
 
         private readonly SportAppDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly ITrainingService _trainingService;
 
-        public TrainingController(SportAppDbContext context)
+        public TrainingController(SportAppDbContext context, IMapper mapper, ITrainingService trainingService)
         {
             _context = context;
+            _mapper = mapper;
+            _trainingService = trainingService;
         }
-        [HttpPost]
-        public IActionResult Post([FromRoute]int userId,Training training)//przyjmuje int z parametru z route, i obiekt DTO
-        {
 
-            return View();
+
+        [HttpPost]
+        public ActionResult Post([FromRoute] int userId, [FromBody] TrainingDto dto)
+        {
+            var newTrainingId = _trainingService.Create(userId, dto);
+            return Created($"{userId}/training/{newTrainingId}", null);
         }
+
+       
+        [HttpGet("list")]
         public async Task<IActionResult> Index()
         {
             return _context.trainings != null ? //jeśli nie jet puste to zwróć widok do którego wysyłasz listę 
                         View(await _context.trainings.ToListAsync()) :
                         Problem("Entity set 'SportAppDbContext.users'  is null.");
         }
+        [HttpGet]
+        public ActionResult<TrainingDto> Get([FromRoute] int userId)
+        {
+           // var user = _context.users.FirstOrDefault(u => u.Id == userId);
+            var training = _context.trainings.FirstOrDefault(t => t.userId == userId);
+            return Ok(training);
+        }
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int userId)
+        {
+            var training = _trainingService.GetTrainingById(userId);
+            _context.trainings.Remove(training);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+
+/*
+        // GET: training/Create
+        [HttpGet("create")]
+        public IActionResult Create([FromRoute]int userId)//powinien dawać new userDTO i wszystko w nim zebrać a potem zmapować na inne modele
+        {
+
+            return View(new TrainingDto());
+        }
+
+        // POST: training/Create
+
+        [HttpPost("create")] 
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([FromRoute] int userId, [Bind("Id,Description,PauseBetweenReps,BreakTimeBetweenEx")] TrainingDto dto)
+        {
+            var train = _mapper.Map<Training>(dto);
+            var user = _context.users.FirstOrDefault(u => u.Id == userId);
+            if (user is null)
+                throw new Exception("User not Found");
+            train.userId = userId;
+            if (ModelState.IsValid)
+            {
+                _context.Add(train);
+                await _context.SaveChangesAsync();
+                return Redirect("https://localhost:7098/user/0/training/list");
+            }
+            return BadRequest();
+        }
+
+ */
+
+
+
+
+
     }
 }

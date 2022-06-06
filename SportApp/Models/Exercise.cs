@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int NumberOfExercises { get; set; }
+        public int NumberOfExercises { get; set; }//liczba serii 
 
         public int NumberOfRepeat { get; set; }
         public int TrainingId { get; set; }

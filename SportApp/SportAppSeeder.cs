@@ -32,7 +32,7 @@ namespace SportApp
                 Email="Mabenz@o2.pl",
                 Training = new Training()
                 {
-                  Description= "Ćwiczenie nr 1",
+                  Description= "Plan treningowy",
                   PauseBetweenReps = 3,
                   BreakTimeBetweenEx = 4,
                 },
