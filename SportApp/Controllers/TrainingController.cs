@@ -47,6 +47,14 @@ namespace SportApp.Controllers
             var training = _context.trainings.FirstOrDefault(t => t.userId == userId);
             return Ok(training);
         }
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int userId)
+        {
+            var training = _trainingService.GetTrainingById(userId);
+            _context.trainings.Remove(training);
+            _context.SaveChanges();
+            return NoContent();
+        }
 
 
 /*
