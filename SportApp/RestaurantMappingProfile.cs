@@ -21,6 +21,8 @@ namespace SportApp
                 .ForMember(m => m.Street, c => c.MapFrom(s => s.Address.Street));
             CreateMap<TrainingDto, Training>();
             CreateMap<Training, TrainingDto>();
+            CreateMap<ExerciseDto, Exercise>();
+            CreateMap<Exercise, ExerciseDto>();
         }
     }
 }
