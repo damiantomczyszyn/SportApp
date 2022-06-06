@@ -8,6 +8,9 @@
         public string LastName { get; set; }
         public string Email { get; set; } // wymagany bo potem będzie to login , potem do dodania też  hasło 
 
+        //public int? Kcal { get; set; }
+        //kalkulator biegania - ile musisz biegać aby to spalić 
+
         public DateTime Created { get; set; } = DateTime.Now;
         public int? AddressId { get; set; }
         public virtual Address? Address { get; set; }

@@ -15,7 +15,7 @@ namespace SportApp.Controllers
         private readonly IMapper _mapper;
         private readonly IExerciseService _exerciseService;
 
-        public ExerciseController(SportAppDbContext context, IMapper mapper, ITrainingService exerciseService)
+        public ExerciseController(SportAppDbContext context, IMapper mapper, IExerciseService exerciseService)
         {
             _context = context;
             _mapper = mapper;
