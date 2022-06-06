@@ -8,7 +8,8 @@ namespace SportApp.Services
     public interface ITrainingService
 {
     int Create(int userId, TrainingDto dto);
-}
+    Training GetTrainingById(int userId);
+    }
 
 
     public class TrainingService : ITrainingService
@@ -27,7 +28,7 @@ namespace SportApp.Services
                 throw new Exception("User not Found");
 
             var trainingEntity = _mapper.Map<Training>(dto);
-
+            user.TrainingId = trainingEntity.Id;
             trainingEntity.userId = userId;
 
             _context.trainings.Add(trainingEntity);
@@ -50,6 +51,20 @@ namespace SportApp.Services
 
            
             return trainingDto;
+        }
+
+        public Training GetTrainingById(int userId)
+        {
+            var user = _context.users.FirstOrDefault(u => u.Id == userId);
+            if (user is null)
+                throw new Exception("User not Found");
+
+            var training = _context.trainings.FirstOrDefault(u => u.userId == userId);
+
+            if (training is null || training.userId != userId)
+            { throw new Exception("training not found"); }
+
+         return training;
         }
 
         public int GetAll(int userId, TrainingDto dto)
