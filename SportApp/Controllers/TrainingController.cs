@@ -57,36 +57,6 @@ namespace SportApp.Controllers
         }
 
 
-/*
-        // GET: training/Create
-        [HttpGet("create")]
-        public IActionResult Create([FromRoute]int userId)//powinien dawać new userDTO i wszystko w nim zebrać a potem zmapować na inne modele
-        {
-
-            return View(new TrainingDto());
-        }
-
-        // POST: training/Create
-
-        [HttpPost("create")] 
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromRoute] int userId, [Bind("Id,Description,PauseBetweenReps,BreakTimeBetweenEx")] TrainingDto dto)
-        {
-            var train = _mapper.Map<Training>(dto);
-            var user = _context.users.FirstOrDefault(u => u.Id == userId);
-            if (user is null)
-                throw new Exception("User not Found");
-            train.userId = userId;
-            if (ModelState.IsValid)
-            {
-                _context.Add(train);
-                await _context.SaveChangesAsync();
-                return Redirect("https://localhost:7098/user/0/training/list");
-            }
-            return BadRequest();
-        }
-
- */
 
 
 
