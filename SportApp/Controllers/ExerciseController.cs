@@ -48,5 +48,18 @@ namespace SportApp.Controllers
 
             return Ok(result);
         }
+       /*  [HttpDelete("{exerciseId}")]
+        public ActionResult<ExerciseDto> Delete([FromRoute] int userId, [FromRoute] int exerciseId)
+        {
+           var exercise = _exerciseService.GetById(userId, exerciseId);
+            if (exercise is not null)
+            {
+                _context.exercises.Remove(exercise);
+                _context.SaveChanges();
+            }
+            return NoContent();
+
+        }*/
+
     }
 }

@@ -51,6 +51,7 @@ namespace SportApp.Controllers
         public ActionResult Delete([FromRoute] int userId)
         {
             var training = _trainingService.GetTrainingById(userId);
+            if (training != null)
             _context.trainings.Remove(training);
             _context.SaveChanges();
             return NoContent();

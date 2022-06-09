@@ -22,6 +22,7 @@ namespace SportApp
             CreateMap<TrainingDto, Training>();
             CreateMap<Training, TrainingDto>();
             CreateMap<ExerciseDto, Exercise>();
+
             CreateMap<Exercise, ExerciseDto>();
         }
     }
